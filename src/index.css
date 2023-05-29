@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  direction: rtl;
+  @apply bg-background-800 font-iran h-full;
+}
+
+.top {
+  z-index: 500;
+}
+

@@ -1,0 +1,1997 @@
+{
+	"info": {
+		"_postman_id": "04694ad1-129c-4bae-8249-aaca4d0b06e2",
+		"name": "Academy Spring",
+		"description": "**All Requests and Responses in this Project**.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9469268"
+	},
+	"item": [
+		{
+			"name": "Login/Register",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"John Doe\",\n    \"email\": \"example@example.com\",\n    \"password\": \"12345678\",\n    \"phoneNumber\": \"09222222222\",\n    \"birthDate\": \"1357/01/26\",\n    \"nationalId\":\"6745556256\",\n    \"profile\": \"image.png\"\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/auth/register",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "**Registering** takes two arguments from Body:\n* fullName\n* email\n* password\n* PhoneNumber\n* birthDate\n\n> **FullName** type is `string` and must be at list 2 character.<br>\n> **Email** type is `string` and must be in correct format.<br>\n> **Password** type is `string` and must be at list 8 character.<br>\n> **PhoneNumber** type is `string` and must be at list 10 & maximum 15 character.<br>\n> **BirthDate** type is `string` and must be in date format `1370/01/01`.\n\n----\n**Response** <br>\n\nIf registeration was successful we have two steps:\n\n> Return Success message with `true`.<br>\n> Call login method automatically.\n\n\nOtherwise:\n> Return error message with `false`.\n\n<br><br>\n\n\nIn **response** we return diffrent types of response Object based on diffrent conditions:\n\n    {\n    \t\"success\": Boolean,\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const user = pm.response.json();\r",
+									"\r",
+									"if (pm.test(\"Has properties\")) {\r",
+									"    pm.globals.set('jwtToken', user.result.jwtToken);\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Global token has been set\", function() {\r",
+									"    var token = pm.globals.get('jwtToken');\r",
+									"    pm.expect(token).to.eql(user.result.jwtToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"example@example.com\",\n    \"password\": \"12345678\"\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "**Login** takes two arguments from Body:\n* Email\n* Password\n\n>**Email** type is `string` and must be in correct format.<br>\n>**Password** type is `string` and must be at list 8 character.\n\n----\n**Response** <br>\n\nIf Login was successful we have two steps:\n\n> Generate `JasonWebToken`.<br>\n> Redirect to destination page.\n\nOtherwise:\n> Return error message with `false`.\n\n<br><br>\n\n\nIn **response** we return diffrent types of response Object based on diffrent conditions:\n\n    {\n    \t\"success\": Boolean,\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Forget Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"example@example.com\"\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/forgetpassword",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"forgetpassword"
+							]
+						},
+						"description": "**Forget Password** only takes one arguments from Body:\n* Email\n\n>**Email** type is `string` and must be in correct format.\n----\n<br>\n\nIn **response** we return diffrent types of response Object based on diffrent conditions:\n\n    {\n    \t\"success\": Boolean,\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"123456789\"\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/resetPassword/:token",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"resetPassword",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": ""
+								}
+							]
+						},
+						"description": "**Reset Password**  takes two arguments:\n* Password\n* Token\n\n> Type is `string` and must be at least 8 character for both.\n----\n<br>\n\nIn **response** we return diffrent types of response Object based on diffrent conditions:\n\n    {\n    \t\"success\": Boolean,\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Register Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"mrasg1377\",\n    \"email\": \"mrasg1377@gmail.com\",\n    \"password\": \"Pass123@\",\n    \"phoneNumber\": \"09222222222\",\n    \"birthDate\": \"1357/01/26\",\n    \"nationalId\":\"0123456781\",\n    \"address\":\"bolvar khazar\",\n    \"role\":\"admin\",\n    \"profile\": \"image.png\"\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/auth/employee/register",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"auth",
+								"employee",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Employ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const user = pm.response.json();\r",
+									"\r",
+									"if (pm.test(\"Has properties\")) {\r",
+									"\r",
+									"    pm.globals.set('employeeToken', user.result.jwtToken);\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Global token has been set\", function() {\r",
+									"    var token = pm.globals.get('employeeToken');\r",
+									"    pm.expect(employeeToken).to.eql(user.result.jwtToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"mrasg1377@gmail.com\",\r\n    \"password\": \"Pass123@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/auth/employee/login",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"auth",
+								"employee",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Student Management",
+			"item": [
+				{
+					"name": "Get all student",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/student/getall",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"student",
+								"getall"
+							]
+						},
+						"description": "To get list of all student you must have admin access provided by **JWT Token**\n\n----\n**Response** <br>\n\nIn **response** we can get list of students in `\"result\":List of students` from response object:\n\n    {\n    \t\"success\": Boolean,\n    \t\"result\": List of student,\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Get students for pagination",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/student/list?pagenumber=1&pagesize=10",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"student",
+								"list"
+							],
+							"query": [
+								{
+									"key": "pagenumber",
+									"value": "1"
+								},
+								{
+									"key": "pagesize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "To get list of all student for pagination you must have admin access provided by **JWT Token**<br>\n**List for pagination** takes two arguments from query string:\n* pagesize\n* pagenumber\n\n----\n**Response** <br>\n\nIf result was successful we get two things in `\"result\"`:\n\n> Student array.<br>\n> Count (total number of students in database collection).\n<br> \n\n    {\n    \t\"success\": Boolean,\n    \t\"result\":{\n    \t\t\"students\":[],\n    \t\t\"count\":number\n    \t},\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Get student by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/student/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"student",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "**Get student by id** takes an argument from url parameter:\n\nOnly authorize student can access to his/her info and admin.\n\n----\n**Response** <br>\n\nIf result was successful we get student info in `\"result\":{}`:\n<br> \n\n    {\n    \t\"success\": Boolean,\n    \t\"result\":{},\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Update student information",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "x-auth-token",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"John Doe\",\r\n    \"email\": \"salar.nili097@gmail.com\",\r\n    \"phoneNumber\": \"09116424126\",\r\n    \"birthDate\": \"1380/01/24\",\r\n    \"nationalId\": \"1234567894\",\r\n    \"profile\": \"image.png\"\r\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/student/604226ac48b2ba00ec7197fe",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"student",
+								"604226ac48b2ba00ec7197fe"
+							]
+						},
+						"description": "**Update student by id** takes arguments from body & id from url parameter:\n\n> Only authorize student can access to his/her info and admin.\n\n----\n**Response** <br>\n\nIf result was successful we get updated student info in `\"result\":{}`:\n<br> \n\n    {\n    \t\"success\": Boolean,\n    \t\"result\":{},\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete student by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{adminToken}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/student/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"student",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						},
+						"description": "**Delete student by id** takes id from url parameter:\n\n\n> Only authorize student can access to his/her info and admin.\n\n----\n**Response** <br>\n\nIf result was successful we get deleted student info in `\"result\":{}`:\n<br> \n\n    {\n    \t\"success\": Boolean,\n    \t\"result\":{},\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Active Student",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/student/active/5dcc4010df4e0f0850478206",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"student",
+								"active",
+								"5dcc4010df4e0f0850478206"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeActive Student",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/student/deactive/5dcc4103df4e0f0850478207",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"student",
+								"deactive",
+								"5dcc4103df4e0f0850478207"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Course",
+			"item": [
+				{
+					"name": "Get All Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/getall",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								"getall"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course For Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/list?pagenumber=1&pagesize=2",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								"list"
+							],
+							"query": [
+								{
+									"key": "pagenumber",
+									"value": "1"
+								},
+								{
+									"key": "pagesize",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Course By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/62812207196cd506bcece646",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								"62812207196cd506bcece646"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"title\": \"ReactJs\",\n      \"cost\": 1000,\n      \"endDate\": \"1399/12/29\",\n      \"startDate\": \"1398/12/29\",\n      \"capacity\": 8,\n      \"teacher\": \"628284559a4090194c4c94bb\",\n      \"lesson\": \"628cf708ffa5fa2d14a0e49f\"\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Course",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"title\": \"ReactJs\",\n      \"cost\": 1000,\n      \"endDate\": \"1399/12/29\",\n      \"startDate\": \"1398/12/29\",\n      \"capacity\": 8,\n      \"teacher\": \"6281211c6befcd3f84397083\",\n      \"lesson\": \"62811b67ec862e0114fc4814\"\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/62812207196cd506bcece646",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								"62812207196cd506bcece646"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Course",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Student to Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"courseId\":\"628284699a4090194c4c94bc\"\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/addStudentToCourse/:userId",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								"addStudentToCourse",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": null
+								}
+							]
+						},
+						"description": "**This** takes argument from Body:\n* TermId\n\n>**TermId** type is `ObjectId` and must be in correct format.<br>\n>**StudentId** type `ObjectId` from URL params\n\n----\n**Response** <br>\n<br>\n\nIn **response** we return diffrent types of response Object based on diffrent conditions:\n\n    {\n    \t\"success\": Boolean,\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Student From Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"courseId\":\"62812207196cd506bcece646\"\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/removeStudentFromCourse/:userId",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								"removeStudentFromCourse",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": null
+								}
+							]
+						},
+						"description": "**This** takes argument from Body:\n* TermId\n\n>**TermId** type is `ObjectId` and must be in correct format.<br>\n>**StudentId** type `ObjectId` from URL params\n\n----\n**Response** <br>\n<br>\n\nIn **response** we return diffrent types of response Object based on diffrent conditions:\n\n    {\n    \t\"success\": Boolean,\n    \t\"message\": {\n        \t\"eventId\": HttpStatusCode,\n        \t\"messageId\": id,\n        \t\"type\": Message Type,\n        \t\"message\": [\n            \t{\n                \t\"eventId\": HttpStatusCode,\n                \t\"type\": Message Type,\n                \t\"message\": \"Message Text\"\n            \t}\n        \t]\n    \t}\n    }\n    \n<br>\n\n**Message Type Values**:<br>\n`MessageType = {\n  error: 0,\n  warning: 1,\n  info: 2\n};`"
+					},
+					"response": []
+				},
+				{
+					"name": "Like Course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseId\": \"60e9bef7cf9a610015612787\",\r\n    \"userId\": \"628284559a4090194c4c94bb\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/like",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DisLike Course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseId\": \"60e9bef7cf9a610015612787\",\r\n    \"userId\": \"60fe996c3ebef3001576d73f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/dislike",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								"dislike"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Count Like Course",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"termId\": \"60fe9ac689e7af1f1c33edc2\",\r\n    \"userId\": \"5f8750df191ae122a031e070\",\r\n    \"like\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/course/likeCount/:courseId",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"course",
+								"likeCount",
+								":courseId"
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lesson",
+			"item": [
+				{
+					"name": "Get All Lessons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/lesson",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"lesson"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lesson ById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/lesson/62811b0eec862e0114fc4813",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"lesson",
+								"62811b0eec862e0114fc4813"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lesson By Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/lesson/list?pagenumber=1&pagesize=2",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"lesson",
+								"list"
+							],
+							"query": [
+								{
+									"key": "pagenumber",
+									"value": "1"
+								},
+								{
+									"key": "pagesize",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lesson for Course By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "hhttps://academy-sepehr.iran.liara.run/api/lesson/course/5e62a71da99f5300179ac2dd",
+							"protocol": "hhttps",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"lesson",
+								"course",
+								"5e62a71da99f5300179ac2dd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Lesson",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"lessonName\":\"AngularJs Rookie\",\n\t\"topics\":[\"front\",\"javascript\",\"typescript\"],\n\t\"description\":\"very difficult but easy\",\n\t\"image\":\"thisfolder.jpg\",\n    \"category\": 7\n}"
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/lesson/add",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"lesson",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Lesson",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"lessonName\":\"AngularJs Rookie\",\r\n\t\"topics\":[\"front\",\"javascript\",\"typescript\"],\r\n\t\"description\":\"very difficult but easy\",\r\n\t\"image\":\"thisfolder.jpg\",\r\n    \"category\": 7\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/lesson/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"lesson",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Lesson",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/lesson/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"lesson",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "News",
+			"item": [
+				{
+					"name": "All News",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/news",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get News By Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{apiurl}}/api/news/list?pagenumber=1&pagesize42&category=news",
+							"protocol": "http",
+							"host": [
+								"{{apiurl}}"
+							],
+							"path": [
+								"api",
+								"news",
+								"list"
+							],
+							"query": [
+								{
+									"key": "pagenumber",
+									"value": "1"
+								},
+								{
+									"key": "pagesize42",
+									"value": null
+								},
+								{
+									"key": "category",
+									"value": "news"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Top News",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/news/topNews",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"news",
+								"topNews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TopArticle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/news/topArticles",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"news",
+								"topArticles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "News By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/news/5e62ec724c0a6f1a787f76ed",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"news",
+								"5e62ec724c0a6f1a787f76ed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Catergory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{apiurl}}/api/news/category/:category",
+							"protocol": "http",
+							"host": [
+								"{{apiurl}}"
+							],
+							"path": [
+								"api",
+								"news",
+								"category",
+								":category"
+							],
+							"variable": [
+								{
+									"key": "category",
+									"value": "مقاله"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add News",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"holomy\",\r\n    \"category\": \"news\",\r\n    \"image\": \"dfg\",\r\n    \"text\": \"4554\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/news/",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"news",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update News By Id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"holomy\",\r\n    \"category\": \"news\",\r\n    \"image\": \"dfg\",\r\n    \"text\": \"4554\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/news/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"news",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete News",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/news/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"news",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact Us",
+			"item": [
+				{
+					"name": "Contact-Us",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" :\"s.09334497255@gmail.com\",\r\n    \"name\" : \"\",\r\n    \"text\" : \"sallam man khobam\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/contactUs",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"contactUs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employe Managment",
+			"item": [
+				{
+					"name": "All Employe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/employee/getall",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"employee",
+								"getall"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Teacher",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/employee/getallteachers",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"employee",
+								"getallteachers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Last Teachers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/employee/getlastteachers",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"employee",
+								"getlastteachers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employe By Pagination",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/employee/list?pagenumber=1&pagesize=10",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"employee",
+								"list"
+							],
+							"query": [
+								{
+									"key": "pagenumber",
+									"value": "1"
+								},
+								{
+									"key": "pagesize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employe ById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/employee/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"employee",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5d8170fb7b8b8a2804c37e23"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Employee",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/employee/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"employee",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active Employe",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/employee/active/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"employee",
+								"active",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5d8170fb7b8b8a2804c37e23"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeActive Employe",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/employee/deactive/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"employee",
+								"deactive",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5d8170fb7b8b8a2804c37e23"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employe",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjgxMjE2MTZiZWZjZDNmODQzOTcwODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTI2Mjk4ODV9.RYwyhkF3_nJpFv7O2Wy9lT0TpKRxcC80TCy-M9rnlXA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/employee/:id",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"employee",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Upload",
+			"item": [
+				{
+					"name": "Image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/RealtyfeedMax/Desktop/Nooshirvani_of_Babol_University_of_Technology_Logo.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://academy-sepehr.iran.liara.run/api/upload/image",
+							"protocol": "https",
+							"host": [
+								"academy-sepehr",
+								"iran",
+								"liara",
+								"run"
+							],
+							"path": [
+								"api",
+								"upload",
+								"image"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{apiurl}}/api/comments/",
+							"protocol": "http",
+							"host": [
+								"{{apiurl}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send New Comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"postId\": \"123fsfdfsfsdd4\",\n        \"email\": \"dasda@dsasa.sssssssssssssssssssssssssssss\",\n        \"username\": \"snda\",\n        \"comment\": \"test\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{apiurl}}/api/comments/send",
+							"protocol": "http",
+							"host": [
+								"{{apiurl}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"60681db9c68d1c2007f9204c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{apiurl}}/api/comments/verify",
+							"protocol": "http",
+							"host": [
+								"{{apiurl}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Answer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"6068375178107b4ee3a24034\",\n    \"answer\": \"Kheili awliiiii\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{apiurl}}/api/comments/answer",
+							"protocol": "http",
+							"host": [
+								"{{apiurl}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								"answer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get All Main Categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://academy-sepehr.iran.liara.run/api/category/getall",
+					"protocol": "https",
+					"host": [
+						"academy-sepehr",
+						"iran",
+						"liara",
+						"run"
+					],
+					"path": [
+						"api",
+						"category",
+						"getall"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "apiurl",
+			"value": "localhost:5000"
+		},
+		{
+			"key": "publicurl",
+			"value": "http://localhost:5000"
+		}
+	]
+}

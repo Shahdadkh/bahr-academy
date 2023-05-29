@@ -1,0 +1,25 @@
+.lds-ring {
+  @apply inline-block w-10 h-10 relative pr-3 mt-1;
+}
+.lds-ring div {
+  @apply box-border block absolute h-8 w-8 border-4 rounded-full;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  @apply delay-500;
+}
+.lds-ring div:nth-child(2) {
+  @apply delay-300;
+}
+.lds-ring div:nth-child(3) {
+  @apply delay-150;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
